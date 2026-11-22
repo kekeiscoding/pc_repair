@@ -6,13 +6,12 @@ function pashMarkup() {
 }
 
 function speakPash() {
-  if (!pashVoice || !voiceClip.paused) return;
-  if (voiceClip.ended) voiceClip.currentTime = 0;
-  voiceClip.play().catch(error => {
-    if (error.name === 'AbortError') return;
-    setPashVoice(false);
-    voiceButton.title = 'The recording could not play. Select to retry.';
-  });
+  if (!pashVoice) return;
+  window.speechSynthesis.cancel();
+  const line = new SpeechSynthesisUtterance(pashLine);
+  line.lang = 'en';
+  line.rate = .95;
+  window.speechSynthesis.speak(line);
 }
 
 function pashSay(line, speak = true) {
@@ -27,19 +26,13 @@ function setPashVoice(enabled) {
   voiceButton.textContent = enabled ? 'PASH voice on' : 'PASH voice off';
   voiceButton.setAttribute('aria-pressed', enabled);
   if (pashVoice) speakPash();
-  else {
-    voiceClip.pause();
-    voiceClip.currentTime = 0;
-  }
+  else window.speechSynthesis.cancel();
 }
 
 const voiceButton = document.querySelector('#pash-voice');
-const voiceClip = document.querySelector('#pash-voice-clip');
-if (voiceClip.canPlayType('audio/mp4; codecs="mp4a.40.2"')) {
+if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
   voiceButton.hidden = false;
-  voiceButton.addEventListener('click', () => {
-    voiceButton.removeAttribute('title');
-    setPashVoice(!pashVoice);
-  });
+  voiceButton.title = 'Reads PASH’s dialogue using your browser voice.';
+  voiceButton.addEventListener('click', () => setPashVoice(!pashVoice));
 }
 
