@@ -58,7 +58,8 @@ button:disabled{cursor:default;opacity:.58}
 .standoff-field{position:absolute;left:21%;top:8%;width:53%;height:65%;background:radial-gradient(circle,#161b1b 0 8%,#a39668 9% 16%,transparent 17%) 0 0/27% 31%;opacity:.55;pointer-events:none}
 .wire-layer{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none}
 .build-part{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);padding:0;border:1px solid #8992946b;border-radius:3px;color:#f2f4ec;background:#353e3a;overflow:hidden;z-index:3;box-shadow:inset 0 0 0 1px #ffffff10,0 3px 5px #0008}
-.build-part:is(button):hover,.build-part:is(button):focus-visible{z-index:22;filter:brightness(1.17);outline:2px solid #cbed80;outline-offset:1px}
+/* Keep highlights on each part's own layer so screws and plugs remain clickable. */
+.build-part:is(button):hover,.build-part:is(button):focus-visible{filter:brightness(1.17);outline:2px solid #cbed80;outline-offset:1px}
 .build-part.vacant{background:#182120b3!important;border:1px dashed #819487;box-shadow:none}
 .build-part.vacant > *{visibility:hidden}
 .build-part.vacant .stamped{visibility:visible;opacity:.65}
