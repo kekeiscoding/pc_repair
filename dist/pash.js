@@ -6,12 +6,13 @@ function pashMarkup() {
 }
 
 function speakPash() {
-  if (!pashVoice || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const line = new SpeechSynthesisUtterance(pashLine);
-  line.lang = 'en';
-  line.rate = .95;
-  window.speechSynthesis.speak(line);
+  if (!pashVoice || !voiceClip.paused) return;
+  if (voiceClip.ended) voiceClip.currentTime = 0;
+  voiceClip.play().catch(error => {
+    if (error.name === 'AbortError') return;
+    setPashVoice(false);
+    voiceButton.title = 'The recording could not play. Select to retry.';
+  });
 }
 
 function pashSay(line, speak = true) {
@@ -21,17 +22,24 @@ function pashSay(line, speak = true) {
   if (speak) speakPash();
 }
 
-function togglePashVoice(button) {
-  pashVoice = !pashVoice;
-  button.textContent = pashVoice ? 'PASH voice on' : 'PASH voice off';
-  button.setAttribute('aria-pressed', pashVoice);
+function setPashVoice(enabled) {
+  pashVoice = enabled;
+  voiceButton.textContent = enabled ? 'PASH voice on' : 'PASH voice off';
+  voiceButton.setAttribute('aria-pressed', enabled);
   if (pashVoice) speakPash();
-  else window.speechSynthesis.cancel();
+  else {
+    voiceClip.pause();
+    voiceClip.currentTime = 0;
+  }
 }
 
 const voiceButton = document.querySelector('#pash-voice');
-if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
+const voiceClip = document.querySelector('#pash-voice-clip');
+if (voiceClip.canPlayType('audio/mp4; codecs="mp4a.40.2"')) {
   voiceButton.hidden = false;
-  voiceButton.addEventListener('click', () => togglePashVoice(voiceButton));
+  voiceButton.addEventListener('click', () => {
+    voiceButton.removeAttribute('title');
+    setPashVoice(!pashVoice);
+  });
 }
 
