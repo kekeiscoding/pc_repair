@@ -1,5 +1,14 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="PashBoot is a timed PC teardown, rebuild, and Windows installation simulator with PASH as your lab partner."><title>PashBoot | PC Repair Lab</title><link rel="icon" type="image/png" href="pash-logo.png"><link rel="stylesheet" href="style.css?v=4"><script src="build.js?v=3" defer></script><script src="voice/lines.js?v=1" defer></script><script src="pash.js?v=6" defer></script><script src="workbench.js?v=3" defer></script><script src="game.js?v=3" defer></script></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="PashBoot is a timed PC teardown, rebuild, and Windows installation simulator with PASH as your lab partner."><title>PashBoot | PC Repair Lab</title><link rel="icon" type="image/png" href="pash-logo.png"><link rel="stylesheet" href="style.css?v=5"><script src="build.js?v=3" defer></script><script src="voice/lines.js?v=1" defer></script><script src="pash.js?v=7" defer></script><script src="workbench.js?v=4" defer></script><script src="game.js?v=4" defer></script></head><body>
 <header><a class="brand" href="index.html"><img src="pash-logo.png" width="38" height="38" alt="">Pash<span>Boot</span></a><span class="header-label">PC REPAIR SIMULATOR</span><button id="pash-voice" class="voice-toggle" type="button" aria-pressed="false" hidden>PASH voice off</button></header>
-<main id="app"></main>
+<main>
+  <aside class="pash-dialogue" aria-label="PASH, your lab partner" hidden>
+    <img src="pash-logo.png" width="54" height="54" alt="">
+    <div class="pash-bubble">
+      <span class="pash-name">PASH <small>LAB PARTNER</small></span>
+      <p aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </aside>
+  <div id="app"></div>
+</main>
 <footer><span>PASHBOOT</span><span>PC REPAIR & TROUBLESHOOTING</span></footer>
 </body></html>

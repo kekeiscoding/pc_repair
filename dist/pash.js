@@ -3,8 +3,14 @@ let pashVoice = false;
 const pashPlayback = new Audio();
 const pashHasBrowserVoice = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 
-function pashMarkup() {
-  return '<aside class="pash-dialogue" aria-label="PASH, your lab partner"><img src="pash-logo.png" width="54" height="54" alt=""><div><span class="pash-name">PASH <small>LAB PARTNER</small></span><p aria-live="polite">' + pashLine + '</p></div></aside>';
+const pashDialogue = document.querySelector('.pash-dialogue');
+const pashCaption = pashDialogue.querySelector('p');
+const pashMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let pashCaptionAnimation;
+
+function showPashDialogue() {
+  pashCaption.textContent = pashLine;
+  pashDialogue.hidden = false;
 }
 
 function speakPash() {
@@ -36,9 +42,17 @@ function stopPashSpeech() {
 }
 
 function pashSay(line, speak = true) {
-  pashLine = line;
-  const caption = app.querySelector('.pash-dialogue p');
-  if (caption) caption.textContent = line;
+  if (pashLine !== line) {
+    pashLine = line;
+    pashCaption.textContent = line;
+    pashCaptionAnimation?.cancel();
+    if (!pashMotion.matches) {
+      pashCaptionAnimation = pashCaption.animate?.([
+        {opacity: .25, transform: 'translateY(7px)'},
+        {opacity: 1, transform: 'translateY(0)'}
+      ], {duration: 290, easing: 'cubic-bezier(.2,.75,.25,1)'});
+    }
+  }
   if (speak) speakPash();
 }
 

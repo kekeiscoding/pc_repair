@@ -46,14 +46,14 @@ function tick() {
 
 function transition() {
   const rebuilding = stage === 'rebuild-ready';
-  app.innerHTML = '<div class="worktop"><div><span class="eyebrow">Hardware lab</span><h2>' + (rebuilding ? 'Teardown complete' : 'Rebuild complete') + '</h2></div>' + clocks() + '</div>' + pashMarkup() + '<div class="game-grid">' + workbench(true) + '<aside class="panel"><h3>' + (rebuilding ? 'Ready to rebuild?' : 'Ready to boot?') + '</h3><p>' + (rebuilding ? 'All parts are in the tray. Seat and secure the hardware, reconnect the cables, then slide the panel back on and tighten its screws.' : 'The case is secured. Reconnect the workstation’s peripherals one at a time, then start the Windows installer.') + '</p><div class="controls"><button class="cta" data-action="' + (rebuilding ? 'rebuild' : 'boot') + '">' + (rebuilding ? 'Start rebuild' : 'Connect external devices') + '</button></div></aside></div>';
+  app.innerHTML = '<div class="worktop"><div><span class="eyebrow">Hardware lab</span><h2>' + (rebuilding ? 'Teardown complete' : 'Rebuild complete') + '</h2></div>' + clocks() + '</div><div class="game-grid">' + workbench(true) + '<aside class="panel"><h3>' + (rebuilding ? 'Ready to rebuild?' : 'Ready to boot?') + '</h3><p>' + (rebuilding ? 'All parts are in the tray. Seat and secure the hardware, reconnect the cables, then slide the panel back on and tighten its screws.' : 'The case is secured. Reconnect the workstation’s peripherals one at a time, then start the Windows installer.') + '</p><div class="controls"><button class="cta" data-action="' + (rebuilding ? 'rebuild' : 'boot') + '">' + (rebuilding ? 'Start rebuild' : 'Connect external devices') + '</button></div></aside></div>';
   drawWiring();
   tick();
   app.querySelector('.cta').focus();
 }
 
 function monitor(body, theme) {
-  app.innerHTML = '<div class="worktop"><div><span class="eyebrow">Software lab</span><h2>Install Windows 11</h2></div>' + clocks() + '</div>' + pashMarkup() + '<section class="bench monitor-bench"><div class="monitor"><div class="screen ' + theme + '">' + body + '</div><div class="monitor-bezel"><i></i></div></div><div class="stand"></div></section>';
+  app.innerHTML = '<div class="worktop"><div><span class="eyebrow">Software lab</span><h2>Install Windows 11</h2></div>' + clocks() + '</div><section class="bench monitor-bench"><div class="monitor"><div class="screen ' + theme + '">' + body + '</div><div class="monitor-bezel"><i></i></div></div><div class="stand"></div></section>';
   tick();
   app.querySelector('.screen h3')?.focus();
 }
@@ -96,7 +96,7 @@ function installFiles() {
 function finish() {
   stage = 'done';
   pashSay('The workstation is ready for the next class. You verified the hardware and brought it back to a working desktop. Good work.');
-  app.innerHTML = pashMarkup() + '<section class="panel result"><p class="eyebrow">Practical complete</p><h2>System ready</h2><p>You reassembled the PC and brought it from an empty drive to a working Windows desktop.</p><dl><dt>Disassembly time</dt><dd>' + format(teardownTime) + '</dd><dt>Reassembly time</dt><dd>' + format(rebuildTime) + '</dd><dt>Total hardware time</dt><dd>' + format(teardownTime + rebuildTime) + '</dd><dt>Incorrect actions</dt><dd>' + mistakes + '</dd></dl><div class="controls"><a class="cta" href="?play=1">Play again</a><a class="cta" href="index.html">Home</a></div></section>';
+  app.innerHTML = '<section class="panel result"><p class="eyebrow">Practical complete</p><h2>System ready</h2><p>You reassembled the PC and brought it from an empty drive to a working Windows desktop.</p><dl><dt>Disassembly time</dt><dd>' + format(teardownTime) + '</dd><dt>Reassembly time</dt><dd>' + format(rebuildTime) + '</dd><dt>Total hardware time</dt><dd>' + format(teardownTime + rebuildTime) + '</dd><dt>Incorrect actions</dt><dd>' + mistakes + '</dd></dl><div class="controls"><a class="cta" href="?play=1">Play again</a><a class="cta" href="index.html">Home</a></div></section>';
   app.querySelector('.cta').focus();
 }
 
@@ -175,6 +175,7 @@ app.addEventListener('click', event => {
 });
 
 if (new URLSearchParams(location.search).has('play')) {
+  showPashDialogue();
   hardwareView();
   setInterval(tick, 200);
 } else home();

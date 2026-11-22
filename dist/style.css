@@ -33,11 +33,19 @@ button:disabled{cursor:default;opacity:.58}
 .metrics{display:flex;flex-wrap:wrap;gap:6px}
 .timer{background:#1b2322;border:1px solid var(--edge);border-radius:5px;padding:9px 10px;white-space:nowrap}
 .timer strong{color:var(--lime)}
-.pash-dialogue{display:flex;gap:13px;align-items:center;padding:10px 14px;margin:0 0 13px;background:linear-gradient(90deg,#253125,#1a2221 65%);border:1px solid #465748;border-left:3px solid var(--lime);border-radius:6px}
-.pash-dialogue img{flex:0 0 auto;width:48px;height:48px}
-.pash-dialogue p{margin:1px 0 0;color:#e3eade;font-size:.92rem;line-height:1.4}
+.pash-dialogue{display:flex;gap:16px;align-items:center;width:min(100%,890px);margin:0 auto 20px;position:sticky;top:10px;z-index:25;pointer-events:none;animation:pash-arrive .48s cubic-bezier(.2,.7,.25,1) both}
+.pash-dialogue[hidden]{display:none}
+.pash-dialogue img{flex:0 0 auto;width:54px;height:54px;border-radius:50%;box-shadow:0 0 0 3px #202b23,0 8px 20px #0009;animation:pash-lift .8s .12s ease-out both}
+.pash-bubble{position:relative;flex:1;min-width:0;padding:10px 16px 11px;border:1px solid #718961;border-radius:12px;background:linear-gradient(125deg,#2b3a2c,#1b2622 72%);box-shadow:0 11px 25px #0009,inset 0 1px #d7efc02e}
+.pash-bubble::before{content:"";position:absolute;top:calc(50% - 5px);left:-6px;width:10px;height:10px;transform:rotate(45deg);background:#29372a;border-left:1px solid #718961;border-bottom:1px solid #718961}
+.pash-dialogue p{margin:2px 0 0;color:#e3eade;font-size:.93rem;line-height:1.4;overflow-wrap:anywhere}
 .pash-name{font:600 .83rem var(--mono);color:var(--lime);letter-spacing:.08em}
 .pash-name small{color:var(--mute);margin-left:5px;font-size:.68rem}
+@keyframes pash-arrive{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pash-lift{0%,100%{transform:translateY(0)}52%{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){.pash-dialogue,.pash-dialogue img{animation:none}}
+@media(min-width:931px){html:has(.pash-dialogue:not([hidden])){scroll-padding-top:110px}}
+@media(max-width:930px){.pash-dialogue{position:relative;top:auto}}
 .game-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(285px,340px);align-items:start;gap:12px}
 .bench{position:relative;display:grid;place-items:center;min-width:0;border:1px solid var(--edge);border-radius:8px;padding:15px clamp(8px,2.8vw,28px);background:radial-gradient(ellipse at top,#70887633,transparent 70%),repeating-linear-gradient(0deg,#819d8516 0 1px,transparent 1px 24px),repeating-linear-gradient(90deg,#819d8516 0 1px,transparent 1px 24px),#192220}
 .hardware-bench{grid-template-rows:auto 1fr auto;gap:14px}
