@@ -7,9 +7,9 @@ function part(id, name, group, box, details = {}) {
 part('panel', 'Steel side panel', 'case', [4, 3, 93, 94], {tip: 'Slide it toward the rear to free the retaining tabs.'});
 part('shield', 'Rear I/O shield', 'case', [18.5, 10, 3, 36], {tip: 'Snap the shield in before fitting the board. Check that none of its spring tabs block a port.'});
 part('board', 'Micro-ATX motherboard', 'parts', [21, 8, 53, 65], {tip: 'Check standoff positions, then align the rear I/O before fastening.', under: 'shield'});
-part('cpu', 'LGA1700 processor', 'parts', [32, 24, 14, 18], {under: 'board', latch: 'cpuLock', tip: 'Hold the edges, align the pin-1 triangle and keying notches, and lower the CPU into the socket.'});
+part('cpu', 'LGA1700 processor', 'parts', [32, 24, 14, 18], {under: 'board', latch: 'cpuLock', coveredBy: 'cooler', tip: 'Hold the edges, align the pin-1 triangle and keying notches, and lower the CPU into the socket.'});
 part('cpuLock', 'CPU load plate and lever', 'parts', [46, 24, 2, 19], {kind: 'latch', under: 'board', holds: 'cpu', coveredBy: 'cooler'});
-part('paste', 'Thermal compound', 'parts', null, {kind: 'paste', under: 'cpu', coveredBy: 'cooler', tip: 'Clean away old compound before reusing the cooler. Follow the cooler’s paste instructions when reinstalling.'});
+part('paste', 'Thermal compound', 'parts', [33, 34, 9, 5], {kind: 'paste', under: 'cpu', coveredBy: 'cooler', tip: 'Clean away old compound before reusing the cooler. Follow the cooler’s paste instructions when reinstalling.'});
 part('cooler', 'CPU heatsink and fan', 'parts', [28, 18, 23, 30], {under: 'cpu', requires: ['cpuLock', 'paste'], tip: 'Loosen the four captive screws gradually in a diagonal pattern. Lift the heatsink without pulling the fan lead.'});
 part('ramA', 'DDR4 DIMM A2', 'parts', [54, 16, 4, 32], {under: 'board', latch: 'ramLockA', closesLatch: true, tip: 'Align the keyed notch. Press evenly until the latch clicks.'});
 part('ramB', 'DDR4 DIMM B2', 'parts', [62, 16, 4, 32], {under: 'board', latch: 'ramLockB', closesLatch: true, tip: 'Use A2 and B2 for the two modules on this lab board.'});

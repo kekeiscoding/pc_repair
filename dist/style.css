@@ -87,6 +87,8 @@ button:disabled{cursor:default;opacity:.58}
 .capacitors{position:absolute;left:12%;top:20%;width:6%;height:45%;background:radial-gradient(circle,#b8c5be 0 22%,#293a39 24% 31%,transparent 32%) 0 0/100% 18%}
 .part-cpu{z-index:4;border-color:#a9b2ad;background:repeating-linear-gradient(0deg,#fff2 0 1px,transparent 1px 4px),linear-gradient(130deg,#bbc2bc,#757f7a 57%,#4b5654);box-shadow:0 0 0 2px #426f57,inset 0 0 0 2px #c5cebf88}
 .part-cpu .stamped{color:#101819;text-shadow:none}.part-cpu .stamped small{color:#182523}
+.kind-paste,.kind-paste.vacant{z-index:8;display:grid;place-items:center;background:#263332!important;border:1px solid #aec0ab;color:#e3eee1;font:600 clamp(.38rem,.7vw,.65rem) var(--mono);box-shadow:0 1px 3px #0008}
+.kind-paste.vacant span{visibility:visible}
 .part-cooler{z-index:6;border-color:#8d9a95;background:repeating-linear-gradient(90deg,#2c3638 0 3px,#838c88 4px 5px,#252f31 6px 7px);border-radius:12%}
 .rotor{display:block;position:absolute;left:9%;top:7%;width:82%;height:86%;border-radius:50%;background:radial-gradient(circle,#5b6664 0 13%,#282e30 14% 19%,transparent 20% 64%,#20282a 65% 69%,#1c2426 70%),repeating-conic-gradient(from 12deg,#161d1f 0 20deg,#52605e 21deg 29deg,#232d2e 31deg 40deg);box-shadow:inset 0 0 0 2px #6e797780,0 2px 3px #000c}
 .part-rearFan,.part-frontFan{border-radius:8%;background:linear-gradient(135deg,#495456,#151c1e);box-shadow:inset 0 0 0 2px #7b858043,0 2px 4px #0008}

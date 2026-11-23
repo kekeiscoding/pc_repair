@@ -69,10 +69,12 @@ function blocked(item, removing) {
     if (items.some(part => part.kind === 'plug' && (part.owner === item.id || part.source === item.id) && fitted.has(part.id))) return 'Unplug the remaining cables attached to the ' + item.name + ' first.';
     if (item.latch && fitted.has(item.latch)) return 'Release the ' + gear[item.latch].name + ' first.';
     const child = items.find(part => part.under === item.id && fitted.has(part.id));
-    if (child) return 'Remove or release the ' + child.name + ' before lifting the ' + item.name + '.';
+    if (child?.kind === 'paste') return 'Clean the thermal compound on the processor before lifting it.';
+    if (child) return itemVerb(child) + ' the ' + child.name + ' before lifting the ' + item.name + '.';
   } else {
     if (item.id === 'panel' && internal.some(part => !fitted.has(part.id))) return 'Finish securing the internal parts and reconnecting their cables before closing the case.';
     if (item.under && !isSecured(item.under)) return 'Secure the ' + gear[item.under].name + ' first.';
+    if (item.kind === 'paste' && !fitted.has('cpuLock')) return 'Lock the CPU load plate before applying thermal compound.';
     if (item.latch && fitted.has(item.latch)) return 'Open the ' + gear[item.latch].name + ' before seating this component.';
     const missing = item.requires?.find(id => !fitted.has(id));
     if (missing) return missing === 'paste' ? 'Apply fresh thermal compound before mounting the cooler.' : 'Lock the CPU load plate before mounting the cooler.';
@@ -106,6 +108,7 @@ function artMarkup(item) {
   if (isFastener(item)) return '<i class="fastener-head" aria-hidden="true"></i>';
   if (item.kind === 'plug') return '<i class="port-pins" aria-hidden="true"></i>';
   if (item.kind === 'latch') return '<i class="retainer" aria-hidden="true"></i>';
+  if (item.kind === 'paste') return '<span aria-hidden="true">PASTE</span>';
   const stamp = markings[item.id];
   const label = stamp ? '<span class="stamped">' + stamp[0] + '<small>' + stamp[1] + '</small></span>' : '';
   if (item.id === 'board') return '<i class="rear-io-bank"></i><i class="socket-footprint"></i><i class="dimm-bank"></i><i class="vrm"></i><i class="chipset"></i><i class="pcie-bank"></i><i class="capacitors"></i>' + label;
@@ -133,7 +136,13 @@ function isVisible(item) {
   if (fitted.has('panel')) return item.id === 'panel' || item.owner === 'panel';
   if (item.id === 'panel' || item.owner === 'panel') return false;
   if (item.coveredBy && fitted.has(item.coveredBy)) return false;
-  if (item.id === 'cpu' && fitted.has('cooler')) return false;
+  // Expose the socket until the cooler can be fitted again.
+  if (item.id === 'cooler' && !fitted.has('cooler')) {
+    return stage === 'install' && !blocked(item, false);
+  }
+  if (item.kind === 'paste') {
+    return fitted.has('cpu') && (stage === 'remove' ? fitted.has(item.id) : stage === 'install' && !fitted.has(item.id) && !blocked(item, false));
+  }
   if (item.under && !fitted.has(item.under)) return false;
   return !item.owner || fitted.has(item.owner);
 }
@@ -225,12 +234,16 @@ function changePart(id, onCase) {
     group = removing ? 'cables' : 'case';
     pashSay(removing ? 'Case is open. Trace each cable to its port and unplug it before lifting the part it serves.' : 'The panel is back on its rails. Finish with the two thumbscrews.');
   }
-  if (id === 'cooler' && removing) pashSay('There’s the processor. Clean the old thermal compound while it’s still secured, then release the socket lever.');
+  if (id === 'cooler' && removing) {
+    group = 'parts';
+    pashSay('There’s the processor. Clean the old thermal compound while it’s still secured, then release the socket lever.');
+  }
   if (removing && item.kind === 'plug' && !items.some(part => part.kind === 'plug' && fitted.has(part.id))) pashSay('All internal plugs are clear. Watch the socket latches and keep each set of screws with its part.');
 
   message = item.name + ' · ' + itemStatus(item) + '.' + (item.tip ? ' ' + item.tip : '');
   if (!removing && item.closesLatch) message += ' Its retention clip clicked into place.';
   isError = false;
   const scope = onCase ? '.precision-case' : '.service-list';
-  hardwareView(scope + ' [data-part="' + id + '"]');
+  const next = id === 'cooler' && removing ? 'paste' : id;
+  hardwareView(scope + ' [data-part="' + next + '"]');
 }
